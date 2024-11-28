@@ -1,8 +1,19 @@
 import React from "react";
 import {GiShoppingBag} from 'react-icons/gi'
 import { NavLink,Link } from "react-router-dom";
+import { useAuth } from "../../context/auth";
+import toast from "react-hot-toast";
 
 export default function Header() {
+  const [auth,setAuth] = useAuth()
+  const handleLogout = ()=>{
+    setAuth({
+      ...auth,user:null,token:''
+    })
+    localStorage.removeItem("auth")
+    toast.success("Logout Successfully!")
+  }
+
   return (
     <>
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -39,7 +50,9 @@ export default function Header() {
                   Category
                 </NavLink>
               </li>
-              <li className="nav-item">
+              {
+                !auth.user ? (<>
+                  <li className="nav-item">
                 <NavLink to="/register" className="nav-link">
                   Register
                 </NavLink>
@@ -49,6 +62,14 @@ export default function Header() {
                   Login
                 </NavLink>
               </li>
+                </>):(<>
+                  <li className="nav-item">
+                <NavLink onClick={handleLogout} to="/login" className="nav-link">
+                  Logout
+                </NavLink>
+              </li>
+                </>)
+              }
               <li className="nav-item">
                 <NavLink to="/cart" className="nav-link">
                   Cart(0)

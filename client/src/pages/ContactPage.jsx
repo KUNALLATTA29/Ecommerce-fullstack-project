@@ -5,7 +5,12 @@ import contactpic from '../images/contact.png'
 
 export default function ContactPage() {
   return (
-    <Layout>
+    <Layout
+    description={"Get in touch with us for any inquiries, support, or feedback. Our customer service team is here to assist you. Find our contact details, email support, and phone number for all your needs."}
+    keywords={"contact us, customer support, e-commerce inquiries, get in touch, contact details"}
+    author={"Ecommerce App"}
+    title={"Contact Us – We're Here to Help with Your Shopping Needs"}
+    >
       <div className="row contactus ">
         <div className="col-md-6 ">
           <img

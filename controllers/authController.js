@@ -7,14 +7,14 @@ export const registerController = async (req,res)=>{
         const {name, email, password, phone, address} = req.body
 
         if(!name || !email || !password || !phone || !address){
-            return res.send({error:'All details are required'})
+            return res.send({message:'All details are required'})
         }
 
         const existingUser = await userModel.findOne({email})
 
         if(existingUser){
             return res.status(200).send({
-                success:true,
+                success:false,
                 message:'Already Register please login'
             })
         }
@@ -85,6 +85,35 @@ export const loginController = async(req,res)=>{
         return res.status(500).send({
             success:false,
             message:'Error in login',
+            error
+        })
+    }
+}
+
+export const forgotPasswordController = async()=>{
+    try{
+        const {email,answer,newPassword} = rea.body
+        if(!email || !answer || !newPassword){
+            return res.status(400).send({message:'All fields are required!'})
+        }
+        const user = await userModel.findOne({email,answer})
+        if(!user){
+            return res.status(404).send({
+                success:false,
+                message:'Wrong Email or Answer'
+            })
+        }
+        const hashed = await hashPassword(newPassword)
+        await userModel.findByIdAndUpdate(user._id,{password:hashed})
+        return res.status(200).send({
+            success:true,
+            message:"Password Reset Successfully"
+        })
+    }catch(error){
+        console.log(error)
+        res.status(500).send({
+            success:false,
+            message:'Something went wrong',
             error
         })
     }
